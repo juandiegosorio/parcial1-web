@@ -1,0 +1,18 @@
+{
+  "app.mainTitle": "¡Adopta un Robot con Robot Lovers!",
+  "app.title": "Lista de Robots",
+  "app.login": "Iniciar Sesión",
+  "app.username": "Nombre de Usuario",
+  "app.password": "Contraseña",
+  "app.signin": "Ingresar",
+  "app.cancel": "Cancelar",
+  "table.name": "Nombre",
+  "table.model": "Modelo",
+  "table.manufacturer": "Empresa Fabricante",
+  "detail.selectRobot": "Selecciona un robot para ver detalles",
+  "detail.manufacturingYear": "Año de Fabricación",
+  "detail.processingPower": "Capacidad de Procesamiento",
+  "detail.additionalFeatures": "Características Adicionales",
+  "detail.personality": "Personalidad"
+
+}

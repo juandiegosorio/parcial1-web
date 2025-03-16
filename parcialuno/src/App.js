@@ -6,16 +6,14 @@ import './App.css';
 import { Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 
-
-
-
 function App() {
   const intl = useIntl();
   const [formData, setFormData] = useState({
-    username: '',
+    login: '',
     password: ''
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -26,7 +24,26 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsAuthenticated(true);
+    setError(null);
+
+    fetch('http://localhost:3001/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then((response) => response.json().then((data) => ({ status: response.status, body: data })))
+      .then(({ status, body }) => {
+        if (status === 200 && body.status === 'success') {
+          setIsAuthenticated(true);
+        } else {
+          setError(body.message);
+        }
+      })
+      .catch(() => {
+        setError('Ocurrió un error al intentar iniciar sesión.');
+      });
   };
 
   return (
@@ -42,17 +59,21 @@ function App() {
                 <h2 className="card-title text-center mb-4">
                   {intl.formatMessage({ id: 'app.login' })}
                 </h2>
+
+                {/* Mensaje de error */}
+                {error && <div className="alert alert-danger">{error}</div>}
+
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="username" className="form-label">
+                    <label htmlFor="login" className="form-label">
                       {intl.formatMessage({ id: 'app.username' })}
                     </label>
                     <input
-                      type="username"
+                      type="text"
                       className="form-control"
-                      id="username"
-                      name="username"
-                      value={formData.username}
+                      id="login"
+                      name="login"
+                      value={formData.login}
                       onChange={handleChange}
                       required
                       placeholder={intl.formatMessage({ id: 'app.username' })}
@@ -75,12 +96,12 @@ function App() {
                   </div>
                   <Row>
                     <Col>
-                      <button type="submit" className="btn btn-primary w-100" style={{ backgroundColor: '#003B93'}}>
+                      <button type="submit" className="btn btn-primary w-100" style={{ backgroundColor: '#003B93' }}>
                         {intl.formatMessage({ id: 'app.signin' })}
                       </button>
                     </Col>
                     <Col>
-                      <button  className="btn btn-primary w-100" style={{ backgroundColor: '#E75D5D'}}>
+                      <button type="button" className="btn btn-danger w-100">
                         {intl.formatMessage({ id: 'app.cancel' })}
                       </button>
                     </Col>
